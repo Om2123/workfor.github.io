@@ -1,1 +1,48 @@
-<h1>om</h1>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://rawgit.com/kangax/fabric.js/master/dist/fabric.min.js"></script>
+    <input type="file" id="file"><br>
+    <div class="canvas-container" style="width: 200px; height: 500px; position: relative; user-select: none;">
+        <canvas id="canvas" width="1000px" height="800px" class="lower-canvas"
+            style="position: absolute; width: 800px; height: 800px; left: 0px; top: 0px; touch-action: none; user-select: none;">
+        </canvas>
+        <!-- <canvas
+            class="upper-canvas " width="950" height="950"
+            style="position: absolute; width: 950px; height: 850px; left: 0px; top: 0px; touch-action: none; user-select: none; cursor: default;">
+        </canvas> -->
+    </div>
+
+
+
+
+    <script type="text/javascript">
+        var canvas = new fabric.Canvas('canvas');
+        document.getElementById('file').addEventListener("change", function (e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function (f) {
+                var data = f.target.result;
+                fabric.Image.fromURL(data, function (img) {
+                    var oImg = img.set({ left: 2, top: 0, angle: 00, width: 1600, height: 600 }).scale(0.9);
+                    canvas.add(oImg).renderAll();
+                    var a = canvas.setActiveObject(oImg);
+                    var dataURL = canvas.toDataURL({ format: 'png', quality: 0.8 });
+                    canvas.zoomToPoint() ;
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+
+
+
+
+       canvas.on('mouse:wheel', function(opt) {
+  var delta = opt.e.deltaY;
+  var zoom = canvas.getZoom();
+  zoom *= 0.999 ** delta;
+  if (zoom > 20) zoom = 20;
+  if (zoom < 0.01) zoom = 0.01;
+  canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+  opt.e.preventDefault();
+  opt.e.stopPropagation();
+});
+    </script>
