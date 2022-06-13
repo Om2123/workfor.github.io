@@ -1,9 +1,11 @@
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://rawgit.com/kangax/fabric.js/master/dist/fabric.min.js"></script>
     <input type="file" id="file"><br>
-    <div class="canvas-container" style="width: 200px; height: 500px; position: relative; user-select: none;">
-        <canvas id="canvas" width="1000px" height="800px" class="lower-canvas"
-            style="position: absolute; width: 800px; height: 800px; left: 0px; top: 0px; touch-action: none; user-select: none;">
+    <div class="canvas-container" style="width: 1000px; height: 500px; position: relative; user-select: none;">
+        <canvas id="canvas" width="1000px" height="500px" class="lower-canvas"
+            style="position: absolute; left: 40px; top: 0px; touch-action: none; user-select: none;">
         </canvas>
         <!-- <canvas
             class="upper-canvas " width="950" height="950"
@@ -20,13 +22,15 @@
             var file = e.target.files[0];
             var reader = new FileReader();
             reader.onload = function (f) {
+              
                 var data = f.target.result;
                 fabric.Image.fromURL(data, function (img) {
-                    var oImg = img.set({ left: 2, top: 0, angle: 00, width: 1600, height: 600 }).scale(0.9);
+                    var oImg = img.set({ left: 2, top: 0, angle: 00 }).scale(0.9);
                     canvas.add(oImg).renderAll();
                     var a = canvas.setActiveObject(oImg);
                     var dataURL = canvas.toDataURL({ format: 'png', quality: 0.8 });
-                    canvas.zoomToPoint() ;
+                    canvas.requestRenderAll();
+                
                 });
             };
             reader.readAsDataURL(file);
@@ -38,10 +42,14 @@
        canvas.on('mouse:wheel', function(opt) {
   var delta = opt.e.deltaY;
   var zoom = canvas.getZoom();
+  const center = canvas.getCenter();
   zoom *= 0.999 ** delta;
   if (zoom > 20) zoom = 20;
-  if (zoom < 0.01) zoom = 0.01;
+  if (zoom < 1) zoom = 1;
+
   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+  canvas.zoomToPoint(centerPoint, 2);
+  canvas.requestRenderAll();
   opt.e.preventDefault();
   opt.e.stopPropagation();
 });
