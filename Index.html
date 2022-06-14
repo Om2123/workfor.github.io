@@ -27,6 +27,7 @@
                 fabric.Image.fromURL(data, function (img) {
                     var oImg = img.set({ left: 2, top: 0, angle: 00 }).scale(0.9);
                     canvas.add(oImg).renderAll();
+                      canvas.centerObject(oImg); 
                     var a = canvas.setActiveObject(oImg);
                     var dataURL = canvas.toDataURL({ format: 'png', quality: 0.8 });
                     canvas.requestRenderAll();
@@ -48,7 +49,7 @@
   if (zoom < 1) zoom = 1;
 
   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-canvas.centerObject(oImg); 
+
   canvas.requestRenderAll();
   opt.e.preventDefault();
   opt.e.stopPropagation();
