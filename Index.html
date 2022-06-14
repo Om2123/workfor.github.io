@@ -48,7 +48,7 @@
   if (zoom < 1) zoom = 1;
 
   canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-  canvas.zoomToPoint(centerPoint, 2);
+canvas.centerObject(oImg); 
   canvas.requestRenderAll();
   opt.e.preventDefault();
   opt.e.stopPropagation();
